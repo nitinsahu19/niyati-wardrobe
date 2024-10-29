@@ -32,7 +32,7 @@ class Directory extends React.Component {
         {
           title: "womens",
           imageUrl:
-            "https://imgs.search.brave.com/tgwZOLGBtYNJq6esdNosyJ4rEdi3eP-m8-cAMcoX5KM/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9oaXBz/LmhlYXJzdGFwcHMu/Y29tL2htZy1wcm9k/L2ltYWdlcy9zdHls/ZS1wb2ludHMtdW5k/ZXJjb25zdW1wdGlv/bi1jb3JlMi0xLTY3/MGZlMTZkOTM4YTQu/anBnP2Nyb3A9MC41/MDJ4dzoxLjAweGg7/MC4yNTB4dywwJnJl/c2l6ZT0zNjA6Kg",
+            "https://imgs.search.brave.com/IZB9dRf4jQ3ckgG6Ki8fJHywc5HtelLy_cImLI5dZNU/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cHJlbWl1bS1waG90/by9leGNpdGVkLWJl/YXV0aWZ1bC13b21h/bi13ZWFyaW5nLWRy/ZXNzLXN1bmdsYXNz/ZXMtaG9sZGluZy1z/aG9wcGluZy1iYWdz/LWZhc2hpb24tc2hv/cHBpbmctY29uY2Vw/dF84OTc0NTktNTE4/LmpwZz9zZW10PWFp/c19oeWJyaWQ",
           id: 4,
           size: "large",
           linkUrl: "",
@@ -40,7 +40,7 @@ class Directory extends React.Component {
         {
           title: "mens",
           imageUrl:
-            "https://imgs.search.brave.com/IWLph3NE5Ls3NzmK77y0LnhUj8X7Z1T5sXrZ1DGG6wA/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9zdGFi/aWxpdHktaW1hZ2Vz/LXVwbG9hZC5zMy5h/bWF6b25hd3MuY29t/L3YxX3R4dDJpbWdf/Y2Y3OWIwZGUtNTBh/Zi00MmYxLWFiZjMt/MDc5MmI1ZjZiOGZh/LnBuZw",
+            "https://imgs.search.brave.com/R60lmqE7Udka436eAirb2PzNvhHef4-9L6b54EEG1Nw/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/ZnJlZS1waG90by90/YWlsb3JlZC1zdWl0/LWZhc2hpb24tcGhv/dG9ncmFwaHlfMTQw/OS02NzI5LmpwZz9z/aXplPTYyNiZleHQ9/anBn",
           id: 5,
           size: "large",
           linkUrl: "",
