@@ -1,7 +1,6 @@
-// Import the necessary Firebase modules
 import { initializeApp } from "firebase/app";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword } from "firebase/auth";
+import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
 // Firebase configuration object
 const firebaseConfig = {
@@ -21,6 +20,35 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const firestore = getFirestore(app);
 
+// Function to create or retrieve a user document in Firestore
+export const createUserProfileDocument = async (userAuth, additionalData) => {
+  if (!userAuth) return null;
+
+  // Reference to the user document in Firestore
+  const userRef = doc(firestore, "users", userAuth.uid);
+  const snapShot = await getDoc(userRef);
+
+  // If user document does not exist, create it
+  if (!snapShot.exists()) {
+    const { displayName, email } = userAuth;
+    const createdAt = new Date();
+
+    try {
+      await setDoc(userRef, {
+        displayName,
+        email,
+        createdAt,
+        ...additionalData,
+      });
+    } catch (error) {
+      console.error("Error creating user document", error);
+    }
+  }
+
+  // Return userRef for further usage
+  return userRef;
+};
+
 // Google sign-in provider setup
 const provider = new GoogleAuthProvider();
 provider.setCustomParameters({ prompt: "select_account" });
@@ -28,5 +56,4 @@ provider.setCustomParameters({ prompt: "select_account" });
 // Function to sign in with Google
 const signInWithGoogle = () => signInWithPopup(auth, provider);
 
-// Export necessary variables
-export { auth, firestore, signInWithGoogle };
+export { auth, firestore, signInWithGoogle, createUserWithEmailAndPassword }; 
