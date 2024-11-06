@@ -1,6 +1,6 @@
 import "./App.css";
 import Homepage from "./pages/homepage/homepage.component";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import ShopPage from "./pages/shop/shop.component";
 import Header from "./components/header/header.component";
 import SignInAndSignUpPage from "./pages/signIn-signup/signIn-signup.component";
@@ -54,12 +54,23 @@ class App extends React.Component {
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/shop" element={<ShopPage />} />
-          <Route path="/signin" element={<SignInAndSignUpPage />} />
+          <Route
+            path="/signin"
+            element={
+              this.props.currentUser ? (
+                <Navigate to="/" />
+              ) : (
+                <SignInAndSignUpPage />
+              )
+            }
+          />
         </Routes>
       </div>
     );
   }
 }
+
+const mapStateToProps = ({ user }) => ({ currentUser: user.currentUser });
 
 // mapDispatchToProps binds the setCurrentUser action to props, allowing the component to update the currentUser state in the Redux store.
 // dispatch is a function provided by Redux that allows you to send actions to the Redux store.
@@ -68,4 +79,4 @@ const mapDispatchToProps = (dispatch) => ({
   setCurrentUser: (user) => dispatch(setCurrentUser(user)),
 });
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

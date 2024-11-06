@@ -1,5 +1,11 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
 // Firebase configuration object
@@ -56,4 +62,10 @@ provider.setCustomParameters({ prompt: "select_account" });
 // Function to sign in with Google
 const signInWithGoogle = () => signInWithPopup(auth, provider);
 
-export { auth, firestore, signInWithGoogle, createUserWithEmailAndPassword }; 
+export {
+  auth,
+  firestore,
+  signInWithGoogle,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+};
