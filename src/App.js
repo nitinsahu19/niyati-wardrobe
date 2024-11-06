@@ -7,38 +7,37 @@ import SignInAndSignUpPage from "./pages/signIn-signup/signIn-signup.component";
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 import React from "react";
 import { onSnapshot } from "firebase/firestore";
+import { connect } from "react-redux";
+import { setCurrentUser } from "./redux/user/user.actions";
 
 class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      currentUser: null,
-    };
-  }
-
   // Variable to store unsubscribe function from auth listener
   unsubscribeFromAuth = null;
 
+  // componentDidMount sets up an onAuthStateChanged listener, which triggers each time the auth state changes.
   componentDidMount() {
+    // setCurrentUser is an action dispatcher provided by mapDispatchToProps. It sends the currentUser data to Redux whenever there’s an update, storing it in the global state.
+    // In React, when you use connect to connect your component to the Redux store, it injects certain props into your component. In your case, mapDispatchToProps injects the setCurrentUser function into App as a prop.
+    const { setCurrentUser } = this.props;
+
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
+        // If userAuth is not null (user is signed in), it creates or fetches a user profile document using createUserProfileDocument.
+        // createUserProfileDocument returns a reference (userRef) to the user document in Firestore.
         const userRef = await createUserProfileDocument(userAuth);
 
         if (userRef) {
+          // onSnapshot is used to get real-time updates of the user document from Firestore.
           onSnapshot(userRef, (snapShot) => {
-            this.setState({
-              currentUser: {
-                id: snapShot.id,
-                ...snapShot.data(),
-              },
+            // setCurrentUser action is dispatched with the user’s data, updating the Redux store with the current user info.
+            setCurrentUser({
+              id: snapShot.id,
+              ...snapShot.data(),
             });
-
-            console.log(this.state)
           });
-
         }
       } else {
-        this.setState({ currentUser: null });
+        setCurrentUser(null);
       }
     });
   }
@@ -51,7 +50,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Header currentUser={this.state.currentUser} />
+        <Header />
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/shop" element={<ShopPage />} />
@@ -62,4 +61,11 @@ class App extends React.Component {
   }
 }
 
-export default App;
+// mapDispatchToProps binds the setCurrentUser action to props, allowing the component to update the currentUser state in the Redux store.
+// dispatch is a function provided by Redux that allows you to send actions to the Redux store.
+// dispatch(setCurrentUser(user)) will call the setCurrentUser action creator, which returns an action object (typically with a type and payload) that Redux then uses to update the state.
+const mapDispatchToProps = (dispatch) => ({
+  setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+});
+
+export default connect(null, mapDispatchToProps)(App);
