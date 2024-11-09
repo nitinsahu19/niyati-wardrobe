@@ -6,6 +6,9 @@ import { auth } from "../../firebase/firebase.utils";
 import { connect } from "react-redux";
 import CartIcon from "../cart-icon/cart-icon.component";
 import CartDropdown from "../cart-dropdown/cart-dropdown.component";
+import { createStructuredSelector } from "reselect";
+import { selectCartHidden } from "../../redux/cart/cart-selectors";
+import { selectCurrentUser } from "../../redux/user/user.selectors";
 
 // currentUser is passed as a prop to determine whether to show "SIGN IN" or "SIGN OUT."
 const Header = ({ currentUser, hidden }) => {
@@ -44,9 +47,9 @@ const Header = ({ currentUser, hidden }) => {
 };
 
 // mapStateToProps is used to access the currentUser from the Redux store.
-const mapStateToProps = ({ user: { currentUser }, cart: { hidden } }) => ({
-  currentUser,
-  hidden,
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser,
+  hidden: selectCartHidden,
 });
 
 export default connect(mapStateToProps)(Header);

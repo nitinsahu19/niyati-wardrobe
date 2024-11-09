@@ -9,6 +9,8 @@ import React from "react";
 import { onSnapshot } from "firebase/firestore";
 import { connect } from "react-redux";
 import { setCurrentUser } from "./redux/user/user.actions";
+import { selectCurrentUser } from "./redux/user/user.selectors";
+import { createStructuredSelector } from "reselect";
 
 class App extends React.Component {
   // Variable to store unsubscribe function from auth listener
@@ -70,7 +72,9 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = ({ user }) => ({ currentUser: user.currentUser });
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser,
+});
 
 // mapDispatchToProps binds the setCurrentUser action to props, allowing the component to update the currentUser state in the Redux store.
 // dispatch is a function provided by Redux that allows you to send actions to the Redux store.

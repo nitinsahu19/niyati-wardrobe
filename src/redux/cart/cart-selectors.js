@@ -4,10 +4,18 @@ import { createSelector } from "reselect";
 const selectCart = (state) => state.cart;
 
 // Memoized selector: calculates the total item  only if cart changes
-export const selectCartItems = createSelector([selectCart], (cart) => cart.cartItems);
+export const selectCartItems = createSelector(
+  [selectCart],
+  (cart) => cart.cartItems
+);
 
 // Memoized selector: calculates the total item count only if cartItems changes
 export const selectCartItemCount = createSelector(
   [selectCartItems],
   (cartItems) => cartItems.reduce((total, item) => total + item.quantity, 0)
+);
+
+export const selectCartHidden = createSelector(
+  [selectCart],
+  (cart) => cart.hidden
 );
