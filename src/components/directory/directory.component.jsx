@@ -20,4 +20,4 @@ const mapStateToProps = createStructuredSelector({
 export default connect(mapStateToProps)(DirectoryComponent);
 
 /*Alternative: Using React Redux useSelector Hook: const sections = useSelector(selectDirectorySections);
-With functional components, you can replace the connect HOC by directly using the useSelector hook to access Redux state. This removes the need for mapStateToProps, making the code a bit cleaner.*/ 
+With functional components, you can replace the connect HOC by directly using the useSelector hook to access Redux state. This removes the need for mapStateToProps, making the code a bit cleaner.*/
