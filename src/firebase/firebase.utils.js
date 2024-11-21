@@ -6,7 +6,14 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  doc,
+  getDoc,
+  setDoc,
+  writeBatch,
+} from "firebase/firestore";
 
 // Firebase configuration object
 const firebaseConfig = {
@@ -26,15 +33,46 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const firestore = getFirestore(app);
 
+// Function to add a collection and documents
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd
+) => {
+  const collectionRef = collection(firestore, collectionKey);
+  const batch = writeBatch(firestore);
+
+  objectsToAdd.forEach((object) => {
+    const docRef = doc(collectionRef); // Generates a new document reference
+    batch.set(docRef, object);
+  });
+
+  await batch.commit();
+  console.log("Documents added to collection successfully!");
+};
+
+export const convertCollectionsSnapshotToMap = (snapshot) => {
+  const transformedCollection = snapshot.docs.map((doc) => {
+    const { items, title } = doc.data();
+    return {
+      routeName: encodeURI(title.toLowerCase()),
+      id: doc.id,
+      title,
+      items,
+    };
+  });
+  return transformedCollection.reduce((accumulator, collection) => {
+    accumulator[collection.title.toLowerCase()] = collection;
+    return accumulator;
+  }, {});
+};
+
 // Function to create or retrieve a user document in Firestore
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return null;
 
-  // Reference to the user document in Firestore
   const userRef = doc(firestore, "users", userAuth.uid);
   const snapShot = await getDoc(userRef);
 
-  // If user document does not exist, create it
   if (!snapShot.exists()) {
     const { displayName, email } = userAuth;
     const createdAt = new Date();
@@ -47,11 +85,10 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
         ...additionalData,
       });
     } catch (error) {
-      console.error("Error creating user document", error);
+      console.error("Error creating user document:", error);
     }
   }
 
-  // Return userRef for further usage
   return userRef;
 };
 
@@ -59,13 +96,11 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 const provider = new GoogleAuthProvider();
 provider.setCustomParameters({ prompt: "select_account" });
 
-// Function to sign in with Google
-const signInWithGoogle = () => signInWithPopup(auth, provider);
+export const signInWithGoogle = () => signInWithPopup(auth, provider);
 
 export {
   auth,
   firestore,
-  signInWithGoogle,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 };

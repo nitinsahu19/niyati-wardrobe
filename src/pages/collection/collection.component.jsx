@@ -11,7 +11,6 @@ const CollectionPage = () => {
     selectCollection(categoryId)(state) // Use categoryId to fetch collection from Redux store
   );
 
-  console.log(collection); // Check if the collection is properly selected from the state
 
   // Ensure collection exists before destructuring
   if (!collection) {

@@ -12,6 +12,7 @@ import { setCurrentUser } from "./redux/user/user.actions";
 import { selectCurrentUser } from "./redux/user/user.selectors";
 import { createStructuredSelector } from "reselect";
 import CheckoutPage from "./pages/checkout/checkout.component";
+import { selectCollectionsForPreview } from "./redux/shop/shop.selectors";
 
 class App extends React.Component {
   // Variable to store unsubscribe function from auth listener
@@ -39,9 +40,8 @@ class App extends React.Component {
             });
           });
         }
-      } else {
-        setCurrentUser(null);
       }
+      setCurrentUser(null);
     });
   }
 
@@ -76,6 +76,7 @@ class App extends React.Component {
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
+  collectionsArray: selectCollectionsForPreview,
 });
 
 // mapDispatchToProps binds the setCurrentUser action to props, allowing the component to update the currentUser state in the Redux store.
