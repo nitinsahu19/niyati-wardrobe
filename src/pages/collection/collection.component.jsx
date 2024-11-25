@@ -6,11 +6,11 @@ import CollectionItem from "../../components/collection-item/collection-item.com
 import "./collection.styles.scss";
 
 const CollectionPage = () => {
-  const { categoryId } = useParams(); // Get categoryId from URL
-  const collection = useSelector((state) =>
-    selectCollection(categoryId)(state) // Use categoryId to fetch collection from Redux store
-  );
+  const { collectionId } = useParams(); // Get categoryId from URL
 
+  const collection = useSelector(
+    (state) => selectCollection(collectionId)(state) // Use categoryId to fetch collection from Redux store
+  );
 
   // Ensure collection exists before destructuring
   if (!collection) {

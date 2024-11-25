@@ -4,11 +4,11 @@ import rootReducer from "./root-reducer";
 import { persistStore } from "redux-persist";
 
 // To remove the redux-logger middleware in the production build, you can conditionally include it based on the environment. Here's how you can modify your code:
-
+// getDefaultMiddleware() is useful if you want to add some custom middleware, but also still want to have the default middleware added as well:
 const middleware = (getDefaultMiddleware) => {
   // Conditionally include logger only in non-production environments
   if (process.env.NODE_ENV !== "production") {
-    return getDefaultMiddleware().concat(logger);
+    return getDefaultMiddleware({ serializableCheck: false }).concat(logger);
   }
   return getDefaultMiddleware();
 };

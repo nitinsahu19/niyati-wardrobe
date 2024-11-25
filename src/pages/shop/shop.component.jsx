@@ -9,8 +9,16 @@ import { Route, Routes } from "react-router-dom";
 import CollectionPage from "../collection/collection.component";
 import { connect } from "react-redux";
 import { updateCollections } from "../../redux/shop/shop.actions";
+import WithSpinner from "../../components/with-spinner/with-spinner.component";
+
+const CollectionsOverviewWithSpinner = WithSpinner(CollectionsOverview);
+const CollectionPageWithSpinner = WithSpinner(CollectionPage);
 
 class ShopPage extends React.Component {
+  state = {
+    loading: true,
+  };
+
   unsubscribeFromSnapshot = null;
 
   componentDidMount() {
@@ -20,13 +28,11 @@ class ShopPage extends React.Component {
     const collectionRef = collection(firestore, "collections");
 
     // Attach the Firestore snapshot listener
-    this.unsubscribeFromSnapshot = onSnapshot(
-      collectionRef,
-      async (snapshot) => {
-        const collectionsMap = convertCollectionsSnapshotToMap(snapshot);
-        updateCollections(collectionsMap);
-      }
-    );
+    this.unsubscribeFromSnapshot = onSnapshot(collectionRef, (snapshot) => {
+      const collectionsMap = convertCollectionsSnapshotToMap(snapshot);
+      updateCollections(collectionsMap);
+      this.setState({ loading: false });
+    });
   }
 
   componentWillUnmount() {
@@ -37,11 +43,18 @@ class ShopPage extends React.Component {
   }
 
   render() {
+    const { loading } = this.state;
     return (
       <div className="shop-page">
         <Routes>
-          <Route path="/" element={<CollectionsOverview />} />
-          <Route path=":collectionId" element={<CollectionPage />} />
+          <Route
+            path="/"
+            element={<CollectionsOverviewWithSpinner isLoading={loading} />}
+          />
+          <Route
+            path=":collectionId"
+            element={<CollectionPageWithSpinner isLoading={loading} />}
+          />
         </Routes>
       </div>
     );
