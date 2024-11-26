@@ -2,15 +2,21 @@ import { configureStore } from "@reduxjs/toolkit";
 import logger from "redux-logger";
 import rootReducer from "./root-reducer";
 import { persistStore } from "redux-persist";
+import { thunk } from "redux-thunk";
 
 // To remove the redux-logger middleware in the production build, you can conditionally include it based on the environment. Here's how you can modify your code:
 // getDefaultMiddleware() is useful if you want to add some custom middleware, but also still want to have the default middleware added as well:
 const middleware = (getDefaultMiddleware) => {
+  const middlewares = getDefaultMiddleware({ serializableCheck: false }).concat(
+    thunk
+  ); // Add thunk middleware
+
   // Conditionally include logger only in non-production environments
   if (process.env.NODE_ENV !== "production") {
-    return getDefaultMiddleware({ serializableCheck: false }).concat(logger);
+    return middlewares.concat(logger);
   }
-  return getDefaultMiddleware();
+
+  return middlewares;
 };
 
 // Configure the store

@@ -8,14 +8,18 @@ import "./collection.styles.scss";
 const CollectionPage = () => {
   const { collectionId } = useParams(); // Get categoryId from URL
 
-  const collection = useSelector(
-    (state) => selectCollection(collectionId)(state) // Use categoryId to fetch collection from Redux store
+
+  const collection = useSelector((state) =>
+    selectCollection(collectionId)(state) // Use categoryId to fetch collection from Redux store
   );
 
+
+
+
   // Ensure collection exists before destructuring
-  if (!collection) {
-    return <div>Collection not found</div>;
-  }
+    if (!collection) {
+      return <div>Collection not found</div>;
+    }
 
   const { title, items } = collection;
 
